@@ -46,7 +46,7 @@ client.once("ready", () => {
       await deleteOldMsg();
       console.log("... daily message cleanup completed");
     }
-  }, 30 * 1000);
+  }, 60 * 1000);
 });
 
 client.login(TOKEN);
