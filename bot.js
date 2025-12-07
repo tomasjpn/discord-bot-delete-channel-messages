@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits } = require("discord.js");
 require("dotenv").config();
-require("Date");
+
 //--------------------------------------------------------------
 
 const TOKEN = process.env.DISCORD_TOKEN;
