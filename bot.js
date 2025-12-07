@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits } = require("discord.js");
 require("dotenv").config();
-
+require("Date");
 //--------------------------------------------------------------
 
 const TOKEN = process.env.DISCORD_TOKEN;
@@ -17,22 +17,21 @@ const client = new Client({
   ],
 });
 
-client.once("ready", async () => {
-  console.log(`Bot is online as ${client.user.tag}`);
-  await deleteOldMsg();
-});
+let lastCleanupDate = null;
 
-client.on("messageCreate", async (message) => {
-  if (message.channel.id !== CHANNEL_ID) return;
+client.once("ready", () => {
+  setInterval(async () => {
+    const currentDate = new Date();
 
-  setTimeout(async () => {
-    try {
-      await message.delete();
-      console.log(`Message from User: ${message.author.tag} deleted`);
-    } catch (err) {
-      console.error("Message could not get deleted:", err);
+    if (
+      currentDate.getHours() === 0 &&
+      currentDate.getMinutes() === 0 &&
+      lastCleanupDate !== currentDate.toDateString()
+    ) {
+      lastCleanupDate = currentDate.toDateString();
+      await deleteOldMsg();
     }
-  }, DELETE_AFTER);
+  }, 30 * 1000);
 });
 
 client.login(TOKEN);
